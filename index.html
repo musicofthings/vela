@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1A1A2E" />
+  <title>VELA Health — Know your body. Own your data.</title>
+  <meta name="description" content="VELA is a privacy-first AI health intelligence platform. Wearable + CGM data, stored locally, analyzed by Claude. Zero-knowledge architecture." />
+  <meta property="og:title" content="VELA Health — Know your body. Own your data." />
+  <meta property="og:description" content="Privacy-first AI health intelligence. WHOOP, Oura, Garmin, CGM. Encrypted local vault. Claude-powered insights." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231A1A2E'/%3E%3Cpath d='M16 16 L32 48 L48 16' stroke='%230FA8A0' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+</head>
+<body>
+  <!-- Top nav -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="#top" class="brand" aria-label="VELA Health home">
+        <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+          <path d="M16 16 L32 48 L48 16" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="brand-word">VELA</span>
+        <span class="brand-sub">HEALTH</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#dashboard">Live demo</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#features">Features</a>
+        <a href="#roadmap">Roadmap</a>
+      </nav>
+      <a class="nav-cta" href="#waitlist">Get early access</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-inner">
+        <p class="eyebrow"><span class="dot"></span>Privacy-first · AI-native · Wearable-agnostic</p>
+        <h1 class="hero-title">
+          Know your body.<br/>
+          <span class="grad">Own your data.</span>
+        </h1>
+        <p class="hero-lede">
+          VELA aggregates your wearable and CGM signals into an encrypted local vault — then applies
+          Claude to deliver deeply personal health insights. Your raw biometrics never leave your device.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#dashboard">See the live demo</a>
+          <a class="btn btn-ghost" href="#privacy">How privacy works →</a>
+        </div>
+
+        <ul class="hero-chips" role="list">
+          <li>WHOOP</li>
+          <li>Oura</li>
+          <li>Garmin</li>
+          <li>Fitbit</li>
+          <li>Apple Health</li>
+          <li>Health Connect</li>
+          <li>Dexcom G7</li>
+          <li>FreeStyle Libre</li>
+        </ul>
+      </div>
+
+      <!-- Floating constellation graphic (Vela = constellation) -->
+      <svg class="constellation" viewBox="0 0 600 400" aria-hidden="true">
+        <defs>
+          <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#0FA8A0" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#0FA8A0" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <g class="lines" stroke="#2D1B69" stroke-width="1" fill="none" opacity="0.6">
+          <path d="M 80 320 L 180 220 L 290 260 L 380 140 L 510 90 L 560 200"/>
+          <path d="M 180 220 L 240 100"/>
+          <path d="M 290 260 L 340 340"/>
+        </g>
+        <g class="stars" fill="#0FA8A0">
+          <circle cx="80"  cy="320" r="3"/>
+          <circle cx="180" cy="220" r="4"/>
+          <circle cx="240" cy="100" r="3"/>
+          <circle cx="290" cy="260" r="3"/>
+          <circle cx="340" cy="340" r="2"/>
+          <circle cx="380" cy="140" r="5"/>
+          <circle cx="510" cy="90"  r="3"/>
+          <circle cx="560" cy="200" r="4"/>
+        </g>
+        <g class="glows">
+          <circle cx="380" cy="140" r="38" fill="url(#starGlow)"/>
+          <circle cx="560" cy="200" r="28" fill="url(#starGlow)"/>
+        </g>
+      </svg>
+    </section>
+
+    <!-- Live demo dashboard -->
+    <section id="dashboard" class="section">
+      <div class="section-head">
+        <p class="eyebrow"><span class="dot teal"></span>Live demo · synthetic data · runs entirely in your browser</p>
+        <h2>One signal. Every system, in context.</h2>
+        <p class="section-lede">
+          This is what VELA looks like on a Tuesday morning. Tap any metric to see the inputs Claude
+          would reason over — no black-box scoring.
+        </p>
+      </div>
+
+      <div class="demo-shell">
+        <div class="demo-frame">
+          <!-- Status row -->
+          <div class="demo-statusbar">
+            <span class="demo-time" id="demoTime">—</span>
+            <span class="demo-status">
+              <span class="lock">🔒</span>
+              <span id="demoVaultStatus">Vault unlocked · biometric</span>
+            </span>
+          </div>
+
+          <!-- Greeting -->
+          <div class="demo-greeting">
+            <p class="demo-hello">Good morning, Anika.</p>
+            <p class="demo-sub" id="demoDay">—</p>
+          </div>
+
+          <!-- Morning signal -->
+          <button class="signal-card" type="button" data-detail="signal" aria-label="View Morning Signal details">
+            <div class="signal-ring-wrap">
+              <svg class="signal-ring" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="52" stroke="#2A2A45" stroke-width="10" fill="none"/>
+                <circle id="signalRing" cx="60" cy="60" r="52" stroke="#0FA8A0" stroke-width="10" fill="none"
+                  stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7"
+                  transform="rotate(-90 60 60)"/>
+              </svg>
+              <div class="signal-value">
+                <span id="signalScore">—</span>
+                <small>/100</small>
+              </div>
+            </div>
+            <div class="signal-meta">
+              <p class="signal-label">Morning Signal</p>
+              <p class="signal-insight" id="signalInsight">
+                Generating insight…
+              </p>
+              <p class="signal-tap">Tap to see the data Claude used →</p>
+            </div>
+          </button>
+
+          <!-- Metric grid -->
+          <div class="metric-grid">
+            <button class="metric-card" type="button" data-detail="hrv">
+              <p class="metric-label">HRV (overnight)</p>
+              <p class="metric-value"><span id="hrvVal">—</span> <span class="metric-unit">ms</span></p>
+              <p class="metric-delta" id="hrvDelta">—</p>
+              <svg class="sparkline" viewBox="0 0 120 36" id="hrvSpark" aria-hidden="true"></svg>
+            </button>
+
+            <button class="metric-card" type="button" data-detail="glucose">
+              <p class="metric-label">Glucose · live</p>
+              <p class="metric-value"><span id="gluVal">—</span> <span class="metric-unit">mg/dL</span></p>
+              <p class="metric-delta" id="gluDelta">—</p>
+              <svg class="sparkline" viewBox="0 0 120 36" id="gluSpark" aria-hidden="true"></svg>
+            </button>
+
+            <button class="metric-card" type="button" data-detail="sleep">
+              <p class="metric-label">Sleep efficiency</p>
+              <p class="metric-value"><span id="sleepVal">—</span> <span class="metric-unit">%</span></p>
+              <p class="metric-delta" id="sleepDelta">—</p>
+              <svg class="sparkline" viewBox="0 0 120 36" id="sleepSpark" aria-hidden="true"></svg>
+            </button>
+
+            <button class="metric-card" type="button" data-detail="temp">
+              <p class="metric-label">Skin temp Δ</p>
+              <p class="metric-value"><span id="tempVal">—</span> <span class="metric-unit">°C</span></p>
+              <p class="metric-delta" id="tempDelta">—</p>
+              <svg class="sparkline" viewBox="0 0 120 36" id="tempSpark" aria-hidden="true"></svg>
+            </button>
+          </div>
+
+          <!-- Correlation panel: glucose × HRV -->
+          <div class="corr-card">
+            <div class="corr-head">
+              <p class="corr-label">Glucose variability × next-day HRV · 14 days</p>
+              <p class="corr-r" id="corrR">r = —</p>
+            </div>
+            <svg class="corr-chart" viewBox="0 0 600 200" id="corrChart" aria-hidden="true"></svg>
+            <p class="corr-note" id="corrNote">Computing correlation…</p>
+          </div>
+
+          <!-- Ask VELA -->
+          <form class="ask" id="askForm" autocomplete="off">
+            <label class="ask-label" for="askInput">Ask VELA</label>
+            <div class="ask-row">
+              <input id="askInput" name="ask" type="text"
+                placeholder="Why was I so tired on Wednesday?"
+                aria-label="Ask a question about your health data"/>
+              <button class="ask-btn" type="submit" aria-label="Send question">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M13 6l6 6-6 6"/>
+                </svg>
+              </button>
+            </div>
+            <div class="ask-suggest" role="list">
+              <button type="button" class="chip" data-prompt="Why did my recovery drop this week?">Why did my recovery drop this week?</button>
+              <button type="button" class="chip" data-prompt="Is my glucose pattern affecting my sleep?">Is glucose affecting my sleep?</button>
+              <button type="button" class="chip" data-prompt="How does training load compare to last week?">Training load vs last week?</button>
+            </div>
+            <div class="ask-output" id="askOutput" aria-live="polite"></div>
+          </form>
+        </div>
+
+        <!-- Detail drawer -->
+        <aside class="detail-panel" id="detailPanel" aria-live="polite">
+          <header class="detail-head">
+            <p class="eyebrow"><span class="dot teal"></span>Anonymized snapshot sent to Claude</p>
+            <h3 id="detailTitle">Select a metric</h3>
+          </header>
+          <div class="detail-body" id="detailBody">
+            <p class="detail-empty">
+              Every insight in VELA is transparent. Tap any tile on the left to see exactly what
+              anonymized snapshot Claude would receive — temporal rounding, differential privacy
+              noise, no PII.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Privacy architecture -->
+    <section id="privacy" class="section privacy">
+      <div class="section-head">
+        <p class="eyebrow"><span class="dot coral"></span>Privacy by architecture, not by policy</p>
+        <h2>Your raw data is structurally unreachable.</h2>
+        <p class="section-lede">
+          Every biometric value lives in an AES-256 encrypted vault on your device. The key is derived
+          from your biometric and stored in your phone's Secure Enclave. We can't read it.
+          Not won't — <em>can't</em>.
+        </p>
+      </div>
+
+      <div class="privacy-grid">
+        <div class="privacy-col">
+          <h3 class="privacy-h">Servers <em>never</em> see</h3>
+          <ul class="privacy-list privacy-never">
+            <li>Raw biometric values (HR, HRV, glucose, SpO₂)</li>
+            <li>Timestamps at precision below 1 hour</li>
+            <li>User ID, device ID, any PII</li>
+            <li>Location data of any kind</li>
+            <li>Wearable device identifiers</li>
+            <li>Sleep-stage sequences</li>
+          </ul>
+        </div>
+        <div class="privacy-col">
+          <h3 class="privacy-h">Servers <em>may</em> see (with consent)</h3>
+          <ul class="privacy-list privacy-may">
+            <li>Anonymized ε-DP metric snapshots for AI analysis</li>
+            <li>Aggregate population trends, group size ≥ 1,000</li>
+            <li>Email hash (bcrypt), subscription status, app version</li>
+            <li>Country-level analytics, opt-in only</li>
+            <li>Device class (iOS / Android) for crash reporting</li>
+            <li>Nothing else — this list is exhaustive</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Pipeline diagram -->
+      <div class="pipeline">
+        <p class="pipeline-title">What happens when you ask Claude a question</p>
+        <ol class="pipeline-steps">
+          <li><span>1</span>Read encrypted vault (Face ID / fingerprint required)</li>
+          <li><span>2</span>Round timestamps to the nearest hour</li>
+          <li><span>3</span>Inject Gaussian DP noise · ε = 0.3, δ = 10⁻⁵</li>
+          <li><span>4</span>Strip user_id → ephemeral per-session token</li>
+          <li><span>5</span>TLS 1.3 to Claude · zero-data-retention</li>
+          <li><span>6</span>Store insight locally · snapshot is never retained</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="section">
+      <div class="section-head">
+        <p class="eyebrow"><span class="dot"></span>What's inside</p>
+        <h2>Six surfaces, one coherent picture of your health.</h2>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature">
+          <p class="feature-tag">P0</p>
+          <h3>Morning Signal</h3>
+          <p>One daily score from HRV, RHR, sleep efficiency, glucose CV, and skin-temp deviation — with a one-sentence Claude explanation. Tap any input to see its raw contribution.</p>
+        </article>
+        <article class="feature">
+          <p class="feature-tag">P0</p>
+          <h3>Sleep Intelligence</h3>
+          <p>4-stage sleep classification from PPG + actigraphy via on-device TFLite. ≥82% accuracy vs polysomnography. When CGM is active, nocturnal glucose overlays sleep architecture.</p>
+        </article>
+        <article class="feature feature-accent">
+          <p class="feature-tag">P1</p>
+          <h3>Metabolic Intelligence</h3>
+          <p>Live glucose widget, meal response tracking, TIR / CV / mean. The first wearable platform to natively correlate CGM with HRV and recovery.</p>
+        </article>
+        <article class="feature">
+          <p class="feature-tag">P1</p>
+          <h3>VELA Intelligence (Claude)</h3>
+          <p>Conversational coaching over anonymized snapshots via tool use. Proactive insights triggered by statistical patterns, not generic reminders. Max 2 nudges/day.</p>
+        </article>
+        <article class="feature">
+          <p class="feature-tag">P2</p>
+          <h3>Anomaly detection</h3>
+          <p>On-device Isolation Forest flags outliers &gt;2 SD from your 30-day baseline. Flag, never alarm — you decide which deserve a closer look.</p>
+        </article>
+        <article class="feature">
+          <p class="feature-tag">P3</p>
+          <h3>Genomic + Clinical overlay</h3>
+          <p>Import polygenic risk scores and FHIR R4 records. Pharmacogenomics alerts cross-reference CYP2D6 / CYP2C19 / SLCO1B1 with your medication log.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Tech architecture -->
+    <section class="section tech">
+      <div class="section-head">
+        <p class="eyebrow"><span class="dot teal"></span>Two-tier AI architecture</p>
+        <h2>On-device for real time. Claude for reasoning.</h2>
+      </div>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <p class="tech-tier">Tier 1 · on-device</p>
+          <p class="tech-tech">TFLite · Core ML · ≤10 MB models</p>
+          <ul class="tech-list">
+            <li>Sleep staging (LSTM, 4-layer)</li>
+            <li>Anomaly detection (Isolation Forest → ONNX)</li>
+            <li>Glucose 30-min forecast (1D-CNN, causal)</li>
+            <li>HRV feature extractor (NeuroKit2 → TFLite)</li>
+          </ul>
+        </div>
+        <div class="tech-card tech-card-accent">
+          <p class="tech-tier">Tier 2 · cloud AI</p>
+          <p class="tech-tech">claude-sonnet-4-6 · ZDR · tool use</p>
+          <ul class="tech-list">
+            <li>Conversational coaching</li>
+            <li>Weekly digest + suggested experiments</li>
+            <li>Cross-signal reasoning over anonymized snapshots</li>
+            <li>Meal analysis (NLP → glycemic load estimate)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Roadmap -->
+    <section id="roadmap" class="section">
+      <div class="section-head">
+        <p class="eyebrow"><span class="dot coral"></span>What ships, when</p>
+        <h2>Roadmap</h2>
+      </div>
+
+      <ol class="roadmap">
+        <li>
+          <div class="phase">
+            <p class="phase-name">Phase 1 · Foundation</p>
+            <p class="phase-time">Months 1–4</p>
+          </div>
+          <ul>
+            <li>Local Data Vault + encryption layer</li>
+            <li>WHOOP + Oura adapters</li>
+            <li>Canonical metric schema</li>
+            <li>Morning Signal (HRV + sleep)</li>
+            <li>iOS + Android MVP · third-party privacy audit</li>
+          </ul>
+        </li>
+        <li>
+          <div class="phase">
+            <p class="phase-name">Phase 2 · Intelligence</p>
+            <p class="phase-time">Months 5–10</p>
+          </div>
+          <ul>
+            <li>CGM integration · Dexcom + Abbott Libre</li>
+            <li>Glucose-HRV correlation engine</li>
+            <li>Claude conversational coaching</li>
+            <li>Garmin, Fitbit, HealthKit adapters</li>
+            <li>On-device sleep staging · proactive anomaly alerts</li>
+          </ul>
+        </li>
+        <li>
+          <div class="phase">
+            <p class="phase-name">Phase 3 · Clinical</p>
+            <p class="phase-time">Months 11–18</p>
+          </div>
+          <ul>
+            <li>Genomic overlay · PGS + pharmacogenomics</li>
+            <li>FHIR R4 clinical import</li>
+            <li>Apollo Diagnostics pilot · 50 patients</li>
+            <li>Physician dashboard with controlled sharing</li>
+            <li>CDSCO + FDA SaMD regulatory scoping</li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+
+    <!-- Waitlist / CTA -->
+    <section id="waitlist" class="section waitlist">
+      <div class="waitlist-card">
+        <p class="eyebrow"><span class="dot teal"></span>Early access</p>
+        <h2>Every signal, yours alone.</h2>
+        <p>
+          Beta opens in Q3 2026. We'll only email you when there's something real to show.
+          No marketing automation, no data sharing.
+        </p>
+        <form class="waitlist-form" id="waitlistForm">
+          <input type="email" required placeholder="you@somewhere.com" aria-label="Email"/>
+          <button type="submit" class="btn btn-primary">Join the waitlist</button>
+        </form>
+        <p class="waitlist-note" id="waitlistNote">We store only a bcrypt hash. You can delete with one tap.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-inner">
+      <div class="foot-brand">
+        <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+          <path d="M16 16 L32 48 L48 16" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>VELA HEALTH</span>
+      </div>
+      <p class="foot-tag">Know your body. Own your data.</p>
+      <p class="foot-meta">
+        v1.0 · PRD May 2026 · Confidential &amp; Proprietary<br/>
+        Shibichakravarthy Kannan, MD, PhD
+      </p>
+      <p class="foot-meta dim">
+        This demo is a public showcase of the product vision. It runs entirely client-side with synthetic data.
+        Nothing is transmitted, nothing is stored.
+      </p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
