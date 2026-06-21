@@ -409,7 +409,10 @@
     temp: 'Skin temperature · snapshot',
   };
 
-  document.querySelectorAll('[data-detail]').forEach(btn => {
+  const detailPanel = document.getElementById('detailPanel');
+  const allDetailBtns = document.querySelectorAll('[data-detail]');
+
+  allDetailBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const kind = btn.getAttribute('data-detail');
       const snap = buildSnapshot(kind);
@@ -424,7 +427,15 @@
           <li><span>Server retention</span><strong>zero</strong></li>
         </ul>
       `;
-      detailBody.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      // Mark active card
+      allDetailBtns.forEach(b => b.setAttribute('aria-pressed', 'false'));
+      btn.setAttribute('aria-pressed', 'true');
+
+      // Scroll the panel into view on mobile / narrow viewports
+      if (window.innerWidth <= 960) {
+        detailPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     });
   });
 
@@ -458,6 +469,8 @@
       <div>${answer.text}</div>
       <span class="src">tools called · ${answer.tools.join(' · ')}</span>
     `;
+    askInput.value = '';
+    askInput.focus();
   });
 
   function vela(q) {
@@ -476,7 +489,7 @@
     }
     if (/(train|run|workout|load|intensity)/.test(t)) {
       return {
-        text: `Your 7-day training load is ${Math.round(60 + Math.random() * 20)}% of your trailing 28-day average. Recovery (HRV + sleep) is currently below baseline, so today's readiness lands at ${score}/100. You decide if that's a green light.`,
+        text: `Your 7-day training load is ${Math.round(60 + rng() * 20)}% of your trailing 28-day average. Recovery (HRV + sleep) is currently below baseline, so today's readiness lands at ${score}/100. You decide if that's a green light.`,
         tools: ['query_metrics(strain, 28d)', 'get_baselines(recovery)'],
       };
     }
@@ -508,4 +521,117 @@
     const t = new Date().toLocaleString('en-US', { hour: 'numeric', minute: '2-digit' });
     document.getElementById('demoTime').textContent = t.toUpperCase();
   }, 30_000);
+
+  // ---------------------------------------------------------------------
+  // Mobile navigation
+  // ---------------------------------------------------------------------
+  const navToggle = document.getElementById('navToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  function openMobileMenu() {
+    mobileMenu.classList.add('open');
+    mobileMenu.setAttribute('aria-hidden', 'false');
+    navToggle.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    // Move focus into menu
+    const firstLink = mobileMenu.querySelector('a');
+    if (firstLink) firstLink.focus();
+  }
+
+  function closeMobileMenu() {
+    mobileMenu.classList.remove('open');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+    navToggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    navToggle.focus();
+  }
+
+  if (navToggle && mobileMenu) {
+    navToggle.addEventListener('click', () => {
+      navToggle.getAttribute('aria-expanded') === 'true'
+        ? closeMobileMenu()
+        : openMobileMenu();
+    });
+
+    // Close on link click
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navToggle.getAttribute('aria-expanded') === 'true') {
+        closeMobileMenu();
+      }
+    });
+
+    // Close on backdrop click (outside nav links)
+    mobileMenu.addEventListener('click', (e) => {
+      if (e.target === mobileMenu) closeMobileMenu();
+    });
+  }
+
+  // ---------------------------------------------------------------------
+  // Scroll spy — active nav link highlighting
+  // ---------------------------------------------------------------------
+  const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
+  const spySections = Array.from(navAnchors)
+    .map(a => document.querySelector(a.getAttribute('href')))
+    .filter(Boolean);
+
+  if (spySections.length && 'IntersectionObserver' in window) {
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = '#' + entry.target.id;
+          navAnchors.forEach(a => {
+            a.classList.toggle('active', a.getAttribute('href') === id);
+          });
+        }
+      });
+    }, { rootMargin: '-15% 0px -70% 0px' });
+
+    spySections.forEach(s => spy.observe(s));
+  }
+
+  // ---------------------------------------------------------------------
+  // Entrance animations — reveal on scroll
+  // ---------------------------------------------------------------------
+  if ('IntersectionObserver' in window) {
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          // Stagger siblings in the same parent
+          const siblings = Array.from(entry.target.parentElement.querySelectorAll('.reveal:not(.revealed)'));
+          const delay = siblings.indexOf(entry.target) * 60;
+          setTimeout(() => {
+            entry.target.classList.add('revealed');
+          }, delay);
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll(
+      '.feature, .tech-card, .roadmap > li, .privacy-col, .pipeline, .waitlist-card'
+    ).forEach(el => {
+      el.classList.add('reveal');
+      revealObserver.observe(el);
+    });
+  }
+
+  // ---------------------------------------------------------------------
+  // Smooth scroll for all same-page anchor links
+  // ---------------------------------------------------------------------
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const target = document.querySelector(link.getAttribute('href'));
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Initialise aria-pressed on all detail buttons
+  allDetailBtns.forEach(b => b.setAttribute('aria-pressed', 'false'));
 })();
